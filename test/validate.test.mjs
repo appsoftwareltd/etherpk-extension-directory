@@ -106,6 +106,8 @@ describe("validateEntry", () => {
         ],
         ["an unknown key in the entry", exampleEntry({ homepage: "https://example.com" }), FILE, 'unknown key "homepage"'],
         ["an unknown key in a release", withRelease({ notes: "Bug fixes" }), FILE, 'releases[0] has an unknown key "notes"'],
+        // A self-hoster's directory may give a package's address. This one's come from npm only.
+        ["a package address in a release", withRelease({ tarball: "garden-1.2.0.tgz" }), FILE, 'releases[0] has an unknown key "tarball"'],
         ["an array instead of an object", [exampleEntry()], FILE, "must hold one JSON object"],
     ];
 

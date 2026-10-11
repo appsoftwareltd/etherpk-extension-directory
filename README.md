@@ -48,6 +48,8 @@ The Client reads this repository's list by default, at `https://raw.githubuserco
 
 Extensions are sorted by id, and each extension's releases are sorted newest first. `npm run build` writes the file, and the same entries always give the same bytes.
 
+A directory you run yourself doesn't need a registry. Its releases can each carry a `tarball` key, the address of the release's package file, absolute or relative to the list's own address (`"tarball": "garden-1.2.0.tgz"`). Then the directory can be plain files on any web server, or a folder on the Client's own machine, with `EXTENSION_DIRECTORY_URL` set to a `file:` address. The Client checks each package against its `integrity` the same way. This repository's releases always come from npm, so its checks refuse a `tarball` key.
+
 ## Layout
 
 | Path | What it holds |
