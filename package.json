@@ -1,0 +1,17 @@
+{
+    "name": "etherpk-extension-directory",
+    "private": true,
+    "description": "The list of reviewed EtherPK extensions from other Publishers, each release pinned by its npm integrity hash.",
+    "license": "MIT",
+    "type": "module",
+    "engines": {
+        "node": ">=24"
+    },
+    "scripts": {
+        "validate": "node scripts/validate.mjs",
+        "build": "node scripts/build-index.mjs",
+        "check": "node scripts/build-index.mjs --check",
+        "test": "node --test",
+        "verify": "node scripts/verify-release.mjs"
+    }
+}

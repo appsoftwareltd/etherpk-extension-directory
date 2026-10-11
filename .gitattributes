@@ -1,0 +1,3 @@
+# directory.json is compared byte for byte by `npm run check`, so every file keeps LF line endings,
+# whatever the contributor's git settings.
+* text=auto eol=lf

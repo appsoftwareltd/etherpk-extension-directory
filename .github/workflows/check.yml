@@ -1,0 +1,86 @@
+# Checks every pull request and every push to main.
+#
+# The workflow runs on `pull_request`, never `pull_request_target`. A pull request from a fork then
+# runs with a read-only token and no secrets, so nothing it checks out or builds can write to this
+# repository. `permissions: contents: read` keeps the token read-only for pull requests from this
+# repository's own branches too, and no step uses a secret.
+name: check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+      - name: Validate the entries
+        run: node scripts/validate.mjs
+      - name: Check directory.json is built from the entries
+        run: node scripts/build-index.mjs --check
+      - name: Run the tests
+        run: node --test
+
+  verify-releases:
+    name: verify releases
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    # This job runs code from outside this repository: each release's build script and its build
+    # dependencies. It gets no write permission, so that code cannot change this repository, comment
+    # on the pull request or approve it. Its only effect is the job's result, and a reviewer reads
+    # the build scripts and the lockfile changes as part of the source (see REVIEWING.md).
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The base branch's history, to compare extensions/ with it.
+          fetch-depth: 0
+          # The checkout keeps no token on disk for the build scripts to find.
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+      - name: Enable pnpm
+        run: corepack enable
+      - name: Rebuild each added or changed release and compare it with npm
+        env:
+          # Passed through the environment, not written into the script, so no value from the pull
+          # request becomes part of the shell command.
+          BASE_REF: ${{ github.base_ref }}
+          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+        # Dependencies are installed with --ignore-scripts (scripts/verify.mjs), so no dependency's
+        # install script runs here. Only the release's own build script and npm's prepack run, as
+        # they did when the Publisher packed the release.
+        run: |
+          releases="$(node scripts/changed-releases.mjs "origin/$BASE_REF")"
+          if [ -z "$releases" ]; then
+            echo "No releases to check."
+            exit 0
+          fi
+          status=0
+          while IFS=@ read -r id version; do
+            echo "::group::Release check for $id $version"
+            # stdin is /dev/null so nothing the check runs can read the remaining lines of the list.
+            if node scripts/verify-release.mjs "$id" "$version" < /dev/null; then
+              echo "::endgroup::"
+            else
+              echo "::endgroup::"
+              echo "::error::$id $version failed the release check. Open its group in this step's log for the details."
+              status=1
+            fi
+          done <<< "$releases"
+          exit "$status"
