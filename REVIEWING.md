@@ -9,6 +9,7 @@ An extension runs with no sandbox in the Client's page, and it can read every do
 - [ ] The **check** and **verify releases** jobs passed. The release check shows that the package on npm was built from the tagged source, so you read source and never the built bundle. Don't review a release whose release check failed.
 - [ ] The pull request adds or changes one release, and `directory.json`.
 - [ ] The entry's `repository` is the extension's real source repository, and the release's `source` is a tag in it.
+- [ ] The `displayName`, `publisher` and `description` don't suggest that EtherPK or App Software made or endorse the extension. The check refuses those two names, but not other ways of saying it.
 
 ## Getting the changes
 
@@ -28,7 +29,9 @@ git diff v1.1.0..v1.2.0
 - [ ] `eval`, `new Function`, and `setTimeout` or `setInterval` called with a string.
 - [ ] Dynamic script loading: `import()` of anything but the extension's own files, script elements, and Workers made from a URL or a string.
 - [ ] Use of the Client's frames (`embeds.frame`): which addresses the extension shows, and what part of a document goes into the address.
-- [ ] Only Stable parts of the Extension API: compare what the extension uses from `context` and its manifest with `etc/etherpk-extension-api.public.api.md` in the EtherPK Client repository, at the version its `minClientVersion` names. A member marked `@beta` is Proposed and not allowed.
+- [ ] Only Stable parts of the Extension API: compare what the extension uses from `context` and its manifest with `etc/etherpk-extension-api.public.api.md` in the EtherPK Client repository, at the version its `minClientVersion` names. A member marked `@beta` is Proposed and not allowed. The Client refuses a call to a Proposed member from an installed extension, so a release that makes one is broken as well as not allowed.
+- [ ] A picture the extension returns for publishing (`toPicture`): read how it's made. An SVG picture is cleaned before it's published, but read it anyway.
+- [ ] Settings of `type: "secret"`: where each value goes. Every extension running on a device can read every extension's settings, so a key is only as safe as the code of every extension installed beside it.
 - [ ] `"isolation": "page"` in the manifest: the pull request says which library can't run in a shadow root, and the extension's stylesheets style only elements under its own classes.
 - [ ] Storage of document text outside the Client: in `localStorage`, IndexedDB or cookies, or sent to any server.
 - [ ] Telemetry, analytics or error reporting of any kind.

@@ -83,9 +83,9 @@ For a first listing, add `extensions/<id>.json`, named after the extension's id:
 
 | Field | What it holds |
 | --- | --- |
-| `id` | The extension's id, the same as `etherpk.id` in `package.json`. It has lower-case letters, digits and hyphens, and starts with a letter. `graph-view`, `kanban` and `maps` belong to extensions built into the Client. |
-| `displayName` | The name people see. |
-| `publisher` | Your name as a Publisher. |
+| `id` | The extension's id, the same as `etherpk.id` in `package.json`. It has lower-case letters, digits and hyphens, and starts with a letter. `graph-view`, `kanban` and `maps` belong to extensions built into the Client. `map`, `math`, `mermaid` and any id that starts with `etherpk` name blocks the Client draws itself, and aren't allowed. |
+| `displayName` | The name people see. It may not name EtherPK or App Software. |
+| `publisher` | Your name as a Publisher. It may not name EtherPK or App Software. |
 | `description` | One line that says what the extension adds. |
 | `repository` | The `https://` address of the public source repository. |
 | `license` | The SPDX identifier of the licence, such as `MIT`. |

@@ -26,6 +26,20 @@ export const DIRECTORY_FORMAT_VERSION = 1;
  */
 export const BUILT_IN_EXTENSION_IDS = Object.freeze(["graph-view", "kanban", "maps"]);
 
+/**
+ * The info words of the fenced blocks the Client draws itself: the Maps extension's Map Block,
+ * maths, Mermaid diagrams and a Protected Document's ciphertext. An extension may name a fence by
+ * its own id, so an extension with one of these ids could draw and publish those blocks in place of
+ * the Client. The Client refuses them too.
+ */
+export const CLIENT_FENCE_WORDS = Object.freeze(["map", "math", "mermaid", "etherpk-cipher"]);
+
+/**
+ * Names only EtherPK's own extensions may use, written as `reservedName` reads a name. A publisher or
+ * display name that holds one would read as EtherPK's own work in Settings.
+ */
+const RESERVED_NAMES = Object.freeze(["etherpk", "appsoftware"]);
+
 /** Every key an entry may have, in the order directory.json writes them. */
 export const ENTRY_KEYS = Object.freeze([
     "id",
@@ -169,6 +183,12 @@ function isCalendarDate(value) {
     return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
 }
 
+/** True when a name holds EtherPK's or App Software's, in any case and with any spaces or punctuation. */
+function reservedName(value) {
+    const letters = value.toLowerCase().replace(/[^a-z0-9]/g, "");
+    return RESERVED_NAMES.some((name) => letters.includes(name));
+}
+
 function isHttpsUrl(value) {
     if (!value.startsWith("https://") || /\s/.test(value)) return false;
     try {
@@ -250,12 +270,18 @@ export function validateEntry(entry, file) {
             report("id", `must be lower-case letters, digits and hyphens, starting with a letter (found ${show(id)})`);
         } else if (BUILT_IN_EXTENSION_IDS.includes(id)) {
             report("id", `${show(id)} is the id of an extension built into the Client`);
+        } else if (CLIENT_FENCE_WORDS.includes(id)) {
+            report("id", `${show(id)} names a block the Client draws itself`);
+        } else if (id.startsWith("etherpk")) {
+            report("id", `${show(id)} starts with etherpk, which is EtherPK's own`);
         }
         if (basename(file) !== `${id}.json`) report("", `must be named ${id}.json, after its id`);
     }
 
-    checkString(entry, "displayName", "", report);
-    checkString(entry, "publisher", "", report);
+    for (const key of ["displayName", "publisher"]) {
+        const name = checkString(entry, key, "", report);
+        if (name !== undefined && reservedName(name)) report(key, `names EtherPK or App Software, which only EtherPK's own extensions may (found ${show(name)})`);
+    }
     checkString(entry, "description", "", report);
 
     const repository = checkString(entry, "repository", "", report);
