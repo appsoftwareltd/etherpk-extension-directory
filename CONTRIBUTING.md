@@ -40,7 +40,7 @@ Dependencies' install scripts don't run in the release check, so a build can't r
    npm pack
    ```
 
-3. Publish the tarball that `npm pack` made, not the folder. Then the bytes on npm are the bytes you packed. Add `--access public` the first time you publish a scoped package.
+3. Publish the tarball that `npm pack` made, not the folder. Then the bytes on npm are the bytes you packed. Add `--access public` the first time you publish a scoped package. Don't publish with `pnpm publish` or `yarn npm publish`: they rewrite `package.json` as they pack, so the release fails the release check. With two-factor authentication and no terminal to answer it, `npm stage publish <tarball>` stages the release, and `npm stage approve <id>` publishes it.
 
    ```sh
    npm publish example-etherpk-extension-garden-1.2.0.tgz
