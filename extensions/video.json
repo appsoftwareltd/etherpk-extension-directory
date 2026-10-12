@@ -1,0 +1,18 @@
+{
+    "id": "video",
+    "displayName": "Videos",
+    "publisher": "gbro3n",
+    "description": "YouTube and Vimeo videos in EtherPK documents: paste a link on a line of its own, or use /video, and the video plays in the document.",
+    "repository": "https://github.com/gbro3n/etherpk-extension-video",
+    "license": "MIT",
+    "package": "@gbro3n/etherpk-extension-video",
+    "releases": [
+        {
+            "version": "0.1.1",
+            "integrity": "sha512-dDHWmtcnJuw2JXJE68luyNmclgBz2PZ5bekY8bnAXsbWklc6IqNhqLBRA9oaiY8GDYozk+m0Ml69Vyc2thk2Ug==",
+            "minClientVersion": "0.10.0",
+            "source": "v0.1.1",
+            "reviewed": "2026-10-12"
+        }
+    ]
+}
