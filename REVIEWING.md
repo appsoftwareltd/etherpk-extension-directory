@@ -28,6 +28,8 @@ git diff v1.1.0..v1.2.0
 - [ ] `eval`, `new Function`, and `setTimeout` or `setInterval` called with a string.
 - [ ] Dynamic script loading: `import()` of anything but the extension's own files, script elements, and Workers made from a URL or a string.
 - [ ] Use of the Client's frames (`embeds.frame`): which addresses the extension shows, and what part of a document goes into the address.
+- [ ] Only Stable parts of the Extension API: compare what the extension uses from `context` and its manifest with `etc/etherpk-extension-api.public.api.md` in the EtherPK Client repository, at the version its `minClientVersion` names. A member marked `@beta` is Proposed and not allowed.
+- [ ] `"isolation": "page"` in the manifest: the pull request says which library can't run in a shadow root, and the extension's stylesheets style only elements under its own classes.
 - [ ] Storage of document text outside the Client: in `localStorage`, IndexedDB or cookies, or sent to any server.
 - [ ] Telemetry, analytics or error reporting of any kind.
 - [ ] Source that is obfuscated or minified. Source must be readable. Built files aren't reviewed, because the release check proves they come from the source.

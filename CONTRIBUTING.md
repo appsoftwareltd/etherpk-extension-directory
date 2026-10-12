@@ -12,7 +12,12 @@ This guide is for a Publisher who wants an extension listed in the EtherPK Exten
   2. `pnpm run build` or `npm run build`, when `package.json` has a `build` script.
   3. `npm pack`, which also runs a `prepack` script if there is one.
 - An `etherpk` manifest in `package.json`. Its `id` must be the entry's `id`, and its `minClientVersion` must be the release's `minClientVersion`.
-- Once EtherPK promotes parts of the Extension API (`@appsoftwareltd/etherpk-extension-api`) to Stable, an extension in the directory may use only those parts.
+- Only the Stable parts of the Extension API (`@appsoftwareltd/etherpk-extension-api`). The package marks each part: `@public` in its documentation is Stable, and `@beta` is Proposed, which only extensions that come with EtherPK may use. The package's API report, `etc/etherpk-extension-api.public.api.md`, lists the Stable parts. A Proposed part you need becomes Stable in a later EtherPK release: open an issue on the EtherPK Client repository to ask.
+- A package the Client accepts: at most 50 MB packed and 150 MB unpacked, in at most 2,000 files, all regular files (no links).
+
+An extension mounts in a shadow root unless its manifest asks for the page with `"isolation": "page"`. Ask for the page only when a library you use can't run in a shadow root, and say why in the pull request. In the page, every rule in the extension's stylesheets must style only elements with a class that starts with its `id`, or elements inside one. The Client refuses any other stylesheet.
+
+Installed extensions update by themselves to the newest listed release the person's EtherPK can run, so every release you list reaches every device that has the extension. A release whose `minClientVersion` is newer than a device's EtherPK waits there until EtherPK is updated.
 
 Dependencies' install scripts don't run in the release check, so a build can't rely on them. A build that writes the date, the time or a path on the build machine into its output also fails the check, because the rebuilt files differ.
 
