@@ -48,6 +48,11 @@
       "package": "@gbro3n/etherpk-extension-video",
       "releases": [
         {
+          "version": "0.1.2",
+          "integrity": "sha512-911s0zjITtETukPNjTR/kTRwirFN9q2HSI/T2PkwQJwzx8FfYjmujHc3PjpqaYATmZFllUQUJ9z5W047aYwxLQ==",
+          "minClientVersion": "0.10.0"
+        },
+        {
           "version": "0.1.1",
           "integrity": "sha512-dDHWmtcnJuw2JXJE68luyNmclgBz2PZ5bekY8bnAXsbWklc6IqNhqLBRA9oaiY8GDYozk+m0Ml69Vyc2thk2Ug==",
           "minClientVersion": "0.10.0"
