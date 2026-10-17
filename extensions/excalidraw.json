@@ -8,6 +8,13 @@
     "package": "@gbro3n/etherpk-extension-excalidraw",
     "releases": [
         {
+            "version": "0.2.0",
+            "integrity": "sha512-mdENGBDOk8EHwS6qWHE1A5tjOq1YU5YK95O0DnZrbP6D/TFz1a5FEjZc6ozkvQ41k/OQPAhA32GgyBFagQ7Sow==",
+            "minClientVersion": "0.14.0",
+            "source": "v0.2.0",
+            "reviewed": "2026-10-17"
+        },
+        {
             "version": "0.1.4",
             "integrity": "sha512-9wgZj9v/YcidvWQmk/aUp68jkgMUw1pYc16WilkjvLiOJ3efTTa3MFhf1WqmDkAw6XCPgg6D1WD3w0kZoefelw==",
             "minClientVersion": "0.10.0",
