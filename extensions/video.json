@@ -8,6 +8,13 @@
     "package": "@gbro3n/etherpk-extension-video",
     "releases": [
         {
+            "version": "0.2.0",
+            "integrity": "sha512-etsapavuNoQP2bnDbnpT60KbSX5dQSM2Owjyc5Qx4cq70mUKH1HjGWNPOqzM94fNh9mfgMOGC4bdJo4D90xxDw==",
+            "minClientVersion": "0.14.0",
+            "source": "v0.2.0",
+            "reviewed": "2026-10-17"
+        },
+        {
             "version": "0.1.2",
             "integrity": "sha512-911s0zjITtETukPNjTR/kTRwirFN9q2HSI/T2PkwQJwzx8FfYjmujHc3PjpqaYATmZFllUQUJ9z5W047aYwxLQ==",
             "minClientVersion": "0.10.0",
